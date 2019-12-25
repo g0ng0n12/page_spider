@@ -1,6 +1,6 @@
 import os
 import argparse
-from utilities import url_utilities
+from utilities import url_utilities, db_utilities
 
 
 def main(database: str, url_list_file: str):
@@ -13,6 +13,12 @@ def main(database: str, url_list_file: str):
         page_content = url_utilities.load_page(url=url)
         word = url_utilities.scrape_page(page_contents=page_content)
         big_word_list.extend(word)
+
+    # Database code
+    os.chdir(os.path.dirname(__file__))
+    path = os.path.join(os.getcwd(), "words.db")
+    db_utilities.create_database(database_path=path)
+    db_utilities.save_words_to_database(database_path=path, words_list=big_word_list)
 
 
 if __name__ == "__main__":
